@@ -18,8 +18,8 @@ const createLintingRule = () => ({
   //   emitWarning: !config.dev.showEslintErrorsInOverlay
   // }
 })
-
-module.exports = {
+const vuxLoader = require('vux-loader')
+const webpackConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
@@ -47,6 +47,14 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
+      },
+      {
+        test: /\.css$/,
+        include: [
+          '/src/assets/styles/',//表示在src目录下的css需要编译
+          '/node_modules/'  //增加此项
+        ],
+        loader: 'style-loader!css-loader',
       },
       {
         test: /\.js$/,
@@ -92,3 +100,6 @@ module.exports = {
     child_process: 'empty'
   }
 }
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: ['vux-ui']
+});
